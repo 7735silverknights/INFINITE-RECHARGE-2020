@@ -4,8 +4,8 @@
 
 Recent updates: 
 
-2020-02-07 Lance: Uploaded basic code for driving the robot
-2020-02-08 Lance: Updated the code with respect to last year's code
+2020-02-07 Lance: Uploaded basic code for driving the robot.
+2020-02-08 Lance: Updated the code with respect to last year's code.
 
 - 2020 Documentation 
   - [Web version](https://docs.wpilib.org/en/latest/)
