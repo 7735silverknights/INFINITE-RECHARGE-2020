@@ -3,9 +3,7 @@
 !!! Please edit **./Main/src/main/java/frc/robot/*Robot.java*** only!!!
 
 Recent updates: 
-
 2020-02-07 Lance: Uploaded basic code for driving the robot.
-
 2020-02-08 Lance: Updated the code with respect to last year's code.
 
 - 2020 Documentation 
@@ -19,4 +17,4 @@ Recent updates:
   5. Repeat steps 3 and 4 to install the **"Debugger for Java"**, **"Language Support for Java(TM) by Red Hat"** and **"WPILib"** extensions. 
   6. After installing the "WPILib" extension you will see an icon with a white "w" on the top right side of the VS Code interfact. Congratulations!
 
-``*1:`` It is assumed that **Java 11** is already installed into your machine
+``*1:`` It is assumed that **Java 11** is already installed on your machine
