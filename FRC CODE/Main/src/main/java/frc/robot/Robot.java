@@ -11,12 +11,11 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
-// Import
-import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.PWMVictorSPX;
-//import edu.wpi.first.wpilibj.TimedRobot; //FIXME I don't know if we should import this or not - Lance
-import edu.wpi.first.wpilibj.Timer;
-import edu.wpi.first.wpilibj.drive.DifferentialDrive;
+// Customized import
+import edu.wpi.cscore.UsbCamera;                      // Camera
+import edu.wpi.first.cameraserver.CameraServer;       // Creating and keeping camera servers
+import edu.wpi.first.wpilibj.Joystick;                // Joystick
+import edu.wpi.first.wpilibj.VictorSP;                // Vector SP Speed Control
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -31,54 +30,66 @@ public class Robot extends TimedRobot {
   private String m_autoSelected;
   private final SendableChooser<String> m_chooser = new SendableChooser<>();
 
-  // Initialize
-  private final DifferentialDrive m_robotDriveBase = new DifferentialDrive(new PWMVictorSPX(0), new PWMVictorSPX(1));
-  private final Joystick m_joystick = new Joystick(0);
-  private final Timer m_timer = new Timer();
+  // Constants 
+  private final double BELT_SPEED = 0.5;
 
-  /**
-   * This function is run when the robot is first started up and should be
-   * used for any initialization code.
-   */
+  // driverStick joystick
+  private  Joystick driver;
+  // private Joystick operatorStick;
+
+  // speed controllers
+  private VictorSP leftDrive;
+  private VictorSP rightDrive;
+  private VictorSP beltDrive;
+  private VictorSP hatchDrive;
+
+  // camera
+  private UsbCamera camera1;
+  private UsbCamera camera2;
+
+  // auto start time
+  long autoStartTime;
+
+  // speed const
+  double speed_const;
+  int direct;
+
   @Override
   public void robotInit() {
     m_chooser.setDefaultOption("Default Auto", kDefaultAuto);
     m_chooser.addOption("My Auto", kCustomAuto);
     SmartDashboard.putData("Auto choices", m_chooser);
+
+    this.driver = new Joystick(0);                     // joystick on input 0
+
+    this.leftDrive = new VictorSP(0);
+    this.rightDrive = new VictorSP(1);
+    this.beltDrive = new VictorSP(2);
+    this.hatchDrive = new VictorSP(3);
+
+    // CameraServer.getInstance().startAutomaticCapture();
+
+    CameraServer.getInstance().startAutomaticCapture(0);
+    CameraServer.getInstance().startAutomaticCapture(1);
+
+    /*
+    try{
+      this.camera2 = CameraServer.getInstance().startAutomaticCapture(1);
+    } catch(Exception e){
+      e.printStackTrace();
+    }
+    */
   }
 
-  /**
-   * This function is called every robot packet, no matter the mode. Use
-   * this for items like diagnostics that you want ran during disabled,
-   * autonomous, teleoperated and test.
-   *
-   * <p>This runs after the mode specific periodic functions, but before
-   * LiveWindow and SmartDashboard integrated updating.
-   */
   @Override
   public void robotPeriodic() {
   }
 
-  /**
-   * This autonomous (along with the chooser code above) shows how to select
-   * between different autonomous modes using the dashboard. The sendable
-   * chooser code works with the Java SmartDashboard. If you prefer the
-   * LabVIEW Dashboard, remove all of the chooser code and uncomment the
-   * getString line to get the auto name from the text box below the Gyro
-   *
-   * <p>You can add additional auto modes by adding additional comparisons to
-   * the switch structure below with additional strings. If using the
-   * SendableChooser make sure to add them to the chooser code above as well.
-   */
   @Override
   public void autonomousInit() {
     m_autoSelected = m_chooser.getSelected();
     // m_autoSelected = SmartDashboard.getString("Auto Selector", kDefaultAuto);
     System.out.println("Auto selected: " + m_autoSelected);
-
-    // Reset and start the timer
-    m_timer.reset();
-    m_timer.start();
   }
 
   /**
@@ -86,6 +97,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousPeriodic() {
+    /*
     switch (m_autoSelected) {
       case kCustomAuto:
         // Put custom auto code here
@@ -94,18 +106,54 @@ public class Robot extends TimedRobot {
       default:
         // Put default auto code here
         break;
-
-        /*
-        //TODO Add conditional statements to run the robot in Auto
-        for example, 
-        if (m_timer.get() < 2.0) {
-          m_robotDriveBase.arcadeDrive(0.5, 0.0); // drive forwards half speed
-        } else {
-          m_robotDriveBase.stopMotor(); // stop robot
-        }
-        */
-
     }
+    */
+
+      // arcade drive
+      // getting the inputs
+      final double driverX = this.driver.getRawAxis(0);
+      final double driverY = this.driver.getRawAxis(1);
+
+      final double beltSpeed = this.driver.getRawAxis(3);            // Right Trigger
+      final double gear3 = this.driver.getRawAxis(2);                // Left Trigger
+
+      // LB/L1 pressed for inverted control
+      if (this.driver.getRawButton(5)) {
+        direct = -1;
+      } else {
+        direct = 1;
+      }
+
+      // calculating the outputs;
+      final double leftOut = driverY * direct + driverX;
+      final double rightOut = driverY * direct - driverX;
+
+      // RB/R1 pressed for acceleration
+      if (this.driver.getRawButton(6)) {
+        if (speed_const < 0.4) {
+          speed_const += 0.025;
+        }
+      } else if (gear3 > 0.5) {                 // LT pressed for further acceleration
+        if (speed_const < 1){
+          speed_const += 0.1;
+        }
+      } else {
+        speed_const = 0.1;
+      }
+
+      // setting speed controllers
+      setLeftDrive(leftOut * speed_const);
+      setRightDrive(rightOut * speed_const);
+
+      this.beltDrive.set(-beltSpeed * BELT_SPEED);
+
+      // setting the hatch panel motor speed
+      if (this.driver.getRawButton(2))
+        this.hatchDrive.set(0.5);
+      else if (this.driver.getRawButton(1))
+        this.hatchDrive.set(-0.5);
+      else
+        this.hatchDrive.set(0);
   }
 
   /**
@@ -113,8 +161,61 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void teleopPeriodic() {
-    // Move the robot from the joystick
-    m_robotDriveBase.arcadeDrive(m_joystick.getY(), m_joystick.getX());
+    // arcade drive
+    // getting the inputs
+    // NOTE: Please name variables so that they are more intuitive! -Khalil Balde
+    // team5596
+    final double driverX = this.driver.getRawAxis(0);
+    final double driverY = this.driver.getRawAxis(1);
+
+    final double beltSpeed = this.driver.getRawAxis(3); // Right Trigger
+    final double gear3 = this.driver.getRawAxis(2);
+
+    // LB/L1 pressed for inverted control
+    if (this.driver.getRawButton(5)) {
+      direct = -1;
+    } else {
+      direct = 1;
+    }
+
+    // calculating the outputs;
+    final double leftOut = driverY * direct + driverX;
+    final double rightOut = driverY * direct - driverX;
+
+    // RB/R1 pressed for acceleration
+    if (this.driver.getRawButton(6)) {
+      if (speed_const < 0.5)
+        speed_const += 0.025;
+    } else if (gear3 > 0.5) { // LT pressed for further acceleration
+      if (speed_const < 1)
+        speed_const += 0.1;
+    } else {
+      speed_const = 0.3;
+    }
+
+    // setting speed controllers
+    setLeftDrive(leftOut * speed_const);
+    setRightDrive(rightOut * speed_const);
+
+    this.beltDrive.set(-beltSpeed * BELT_SPEED);
+
+    // setting the hatch panel motor speed
+    if (this.driver.getRawButton(2))
+      this.hatchDrive.set(0.5);
+    else if (this.driver.getRawButton(1))
+      this.hatchDrive.set(-0.5);
+    else
+      this.hatchDrive.set(0);
+  }
+
+  // this sets the speed of the left-side motors
+  private void setLeftDrive(final double speed) {
+    this.leftDrive.set(speed);
+  }
+
+  // this sets the speed of the right-side motors
+  private void setRightDrive(final double speed) {
+    this.rightDrive.set(speed);
   }
 
   /**
@@ -122,5 +223,11 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void testPeriodic() {
+    double leftStick = -this.driver.getRawAxis(0);
+    double rightStick = -this.driver.getRawAxis(1);
+
+    // setLeftDrive(leftStick);
+    setRightDrive(rightStick);
+    setLeftDrive(leftStick);
   }
 }
