@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 // Customized import
+// this is sam. Why didn't you import all
 import edu.wpi.cscore.UsbCamera;                      // Camera
 import edu.wpi.first.cameraserver.CameraServer;       // Creating and keeping camera servers
 import edu.wpi.first.wpilibj.Joystick;                // Joystick
