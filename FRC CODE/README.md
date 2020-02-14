@@ -9,6 +9,7 @@
   - [Web version](https://docs.wpilib.org/en/latest/)
   - [PDF version](https://readthedocs.org/projects/frc-docs/downloads/pdf/latest/) for offline use
 - Please look over this section if you don't know how to setup for WPILib
+  * Follow this [link](https://docs.wpilib.org/en/latest/docs/getting-started/getting-started-frc-control-system/wpilib-setup.html) for the required setup. 
   1. Download and install [***Visual Studio Code***](https://code.visualstudio.com) (later refered to as VS Code).
   2. Open VS Code, go to extensions(**Ctrl+Shift+X** on Windows or **⇧⌘X** on Mac). 
   3. In the search field, type **"Java Extension Pack"** and hit **Enter** on the keyboard. ``*1``
