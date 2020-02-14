@@ -14,7 +14,7 @@
       [Windows 64](https://github.com/wpilibsuite/allwpilib/releases/download/v2020.2.2/WPILibInstaller_Windows64-2020.2.2.zip), 
       [Linux](https://github.com/wpilibsuite/allwpilib/releases/download/v2020.2.2/WPILib_Linux-2020.2.2.tar.gz), 
       [Mac](https://github.com/wpilibsuite/allwpilib/releases/download/v2020.2.2/WPILib_Mac-2020.2.2.tar.gz). 
-      Follow the instructions on the webpage and use the following instructions as supplement. 
+      ***Follow the instructions on the webpage and use the following instructions as supplement.*** 
   2. Download and install [***Visual Studio Code***](https://code.visualstudio.com) (later refered to as VS Code).
   3. Open VS Code, go to extensions(**Ctrl+Shift+X** on Windows or **⇧⌘X** on Mac). 
   4. In the search field, type **"Java Extension Pack"** and hit **Enter** on the keyboard. ``*1``
