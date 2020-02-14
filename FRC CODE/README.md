@@ -11,9 +11,9 @@
 - Please look over this section if you don't know how to setup for WPILib
   1. Follow [this link](https://docs.wpilib.org/en/latest/docs/getting-started/getting-started-frc-control-system/wpilib-setup.html) for the required setup. 
     - Or download the required files:
-      [Windows 32](https://github.com/wpilibsuite/allwpilib/releases/download/v2020.2.2/WPILibInstaller_Windows32-2020.2.2.zip)
-      [Windows 64](https://github.com/wpilibsuite/allwpilib/releases/download/v2020.2.2/WPILibInstaller_Windows64-2020.2.2.zip)
-      [Linux](https://github.com/wpilibsuite/allwpilib/releases/download/v2020.2.2/WPILib_Linux-2020.2.2.tar.gz)
+      [Windows 32](https://github.com/wpilibsuite/allwpilib/releases/download/v2020.2.2/WPILibInstaller_Windows32-2020.2.2.zip), 
+      [Windows 64](https://github.com/wpilibsuite/allwpilib/releases/download/v2020.2.2/WPILibInstaller_Windows64-2020.2.2.zip), 
+      [Linux](https://github.com/wpilibsuite/allwpilib/releases/download/v2020.2.2/WPILib_Linux-2020.2.2.tar.gz), 
       [Mac](https://github.com/wpilibsuite/allwpilib/releases/download/v2020.2.2/WPILib_Mac-2020.2.2.tar.gz)
   2. Download and install [***Visual Studio Code***](https://code.visualstudio.com) (later refered to as VS Code).
   3. Open VS Code, go to extensions(**Ctrl+Shift+X** on Windows or **⇧⌘X** on Mac). 
