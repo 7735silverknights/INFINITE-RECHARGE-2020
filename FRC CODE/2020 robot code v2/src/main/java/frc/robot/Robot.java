@@ -32,7 +32,7 @@ public class Robot extends TimedRobot {
   private final SendableChooser<String> m_chooser = new SendableChooser<>();
 
   // Constants 
-  private final double BELT_SPEED = 0.5;
+  private final double SPIN_SPEED = 0.5;
 
   // driverStick joystick
   private  Joystick driver;
@@ -41,8 +41,10 @@ public class Robot extends TimedRobot {
   // speed controllers
   private VictorSP leftDrive;
   private VictorSP rightDrive;
-  private VictorSP beltDrive;
-  private VictorSP hatchDrive;
+  private VictorSP spinDrive;
+  private VictorSP intakeDrive;
+  private VictorSP armDrive;
+  private VictorSP liftDrive;
 
   // camera
   private UsbCamera camera1;
@@ -65,8 +67,10 @@ public class Robot extends TimedRobot {
 
     this.leftDrive = new VictorSP(0);
     this.rightDrive = new VictorSP(1);
-    this.beltDrive = new VictorSP(2);
-    this.hatchDrive = new VictorSP(3);
+    this.spinDrive = new VictorSP(2);
+    this.intakeDrive = new VictorSP(3);
+    this.armDrive = new VictorSP(4);
+    this.liftDrive = new VictorSP(5);
 
     // CameraServer.getInstance().startAutomaticCapture();
 
@@ -115,7 +119,7 @@ public class Robot extends TimedRobot {
       final double driverX = this.driver.getRawAxis(0);
       final double driverY = this.driver.getRawAxis(1);
 
-      final double beltSpeed = this.driver.getRawAxis(3);            // Right Trigger
+      final double spinSpeed = this.driver.getRawAxis(3);            // Right Trigger
       final double gear3 = this.driver.getRawAxis(2);                // Left Trigger
 
       // LB/L1 pressed for inverted control
@@ -146,15 +150,31 @@ public class Robot extends TimedRobot {
       setLeftDrive(leftOut * speed_const);
       setRightDrive(rightOut * speed_const);
 
-      this.beltDrive.set(-beltSpeed * BELT_SPEED);
+      this.spinDrive.set(-spinSpeed * SPIN_SPEED);
 
-      // setting the hatch panel motor speed
+      // setting the intake motor speed
       if (this.driver.getRawButton(2))
-        this.hatchDrive.set(0.5);
+        this.intakeDrive.set(0.5);
       else if (this.driver.getRawButton(1))
-        this.hatchDrive.set(-0.5);
+        this.intakeDrive.set(-0.5);
       else
-        this.hatchDrive.set(0);
+        this.intakeDrive.set(0);
+
+      // setting the arm motor speed
+      if (this.driver.getRawButton(4))
+        this.armDrive.set(0.5);
+      else if (this.driver.getRawButton(3))
+        this.armDrive.set(-0.5);
+      else
+        this.armDrive.set(0);
+
+        // setting the lift motor speed
+      if (this.driver.getRawButton(10))
+      this.liftDrive.set(0.5);
+    //else if (this.driver.getRawButton(3))
+      //this.liftDrive.set(-0.5);
+    else
+      this.liftDrive.set(0);
   }
 
   /**
@@ -169,7 +189,7 @@ public class Robot extends TimedRobot {
     final double driverX = this.driver.getRawAxis(0);
     final double driverY = this.driver.getRawAxis(1);
 
-    final double beltSpeed = this.driver.getRawAxis(3); // Right Trigger
+    final double spinSpeed = this.driver.getRawAxis(3); // Right Trigger
     final double gear3 = this.driver.getRawAxis(2);
 
     // LB/L1 pressed for inverted control
@@ -198,15 +218,31 @@ public class Robot extends TimedRobot {
     setLeftDrive(leftOut * speed_const);
     setRightDrive(rightOut * speed_const);
 
-    this.beltDrive.set(-beltSpeed * BELT_SPEED);
+    this.spinDrive.set(-spinSpeed * SPIN_SPEED);
 
-    // setting the hatch panel motor speed
+    // setting the intake motor speed
     if (this.driver.getRawButton(2))
-      this.hatchDrive.set(0.5);
+      this.intakeDrive.set(0.5);
     else if (this.driver.getRawButton(1))
-      this.hatchDrive.set(-0.5);
+      this.intakeDrive.set(-0.5);
     else
-      this.hatchDrive.set(0);
+      this.intakeDrive.set(0);
+
+    // setting the arm motor speed
+    if (this.driver.getRawButton(4))
+    this.armDrive.set(0.5);
+  else if (this.driver.getRawButton(3))
+    this.armDrive.set(-0.5);
+  else
+    this.armDrive.set(0);
+
+    // setting the lift motor speed
+    if (this.driver.getRawButton(10))
+    this.liftDrive.set(0.5);
+  //else if (this.driver.getRawButton(3))
+    //this.liftDrive.set(-0.5);
+  else
+    this.liftDrive.set(0);
   }
 
   // this sets the speed of the left-side motors
