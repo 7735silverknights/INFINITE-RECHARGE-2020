@@ -41,8 +41,10 @@ public class Robot extends TimedRobot {
   // speed controllers
   private VictorSP leftDrive;
   private VictorSP rightDrive;
-  private VictorSP beltDrive;
-  private VictorSP hatchDrive;
+  private VictorSP ballDrive;
+  private VictorSP armDrive;
+  private VictorSP climbDrive;
+  private VictorSP spinDrive;
 
   // camera
   private UsbCamera camera1;
@@ -65,8 +67,10 @@ public class Robot extends TimedRobot {
 
     this.leftDrive = new VictorSP(0);
     this.rightDrive = new VictorSP(1);
-    this.beltDrive = new VictorSP(2);
-    this.hatchDrive = new VictorSP(3);
+    this.ballDrive = new VictorSP(2);
+    this.armDrive = new VictorSP(3);
+    this.climbDrive = new VictorSP(4);
+    this.spinDrive = new VictorSP(5);
 
     // CameraServer.getInstance().startAutomaticCapture();
 
@@ -146,15 +150,15 @@ public class Robot extends TimedRobot {
       setLeftDrive(leftOut * speed_const);
       setRightDrive(rightOut * speed_const);
 
-      this.beltDrive.set(-beltSpeed * BELT_SPEED);
+      // this.beltDrive.set(-beltSpeed * BELT_SPEED);
 
-      // setting the hatch panel motor speed
-      if (this.driver.getRawButton(2))
-        this.hatchDrive.set(0.5);
-      else if (this.driver.getRawButton(1))
-        this.hatchDrive.set(-0.5);
-      else
-        this.hatchDrive.set(0);
+      // // setting the hatch panel motor speed
+      // if (this.driver.getRawButton(2))
+      //   this.hatchDrive.set(0.5);
+      // else if (this.driver.getRawButton(1))
+      //   this.hatchDrive.set(-0.5);
+      // else
+      //   this.hatchDrive.set(0);
   }
 
   /**
@@ -198,15 +202,15 @@ public class Robot extends TimedRobot {
     setLeftDrive(leftOut * speed_const);
     setRightDrive(rightOut * speed_const);
 
-    this.beltDrive.set(-beltSpeed * BELT_SPEED);
+    // this.beltDrive.set(-beltSpeed * BELT_SPEED);
 
-    // setting the hatch panel motor speed
-    if (this.driver.getRawButton(2))
-      this.hatchDrive.set(0.5);
-    else if (this.driver.getRawButton(1))
-      this.hatchDrive.set(-0.5);
-    else
-      this.hatchDrive.set(0);
+    //  setting the hatch panel motor speed
+    // if (this.driver.getRawButton(2))
+    //   this.hatchDrive.set(0.5);
+    // else if (this.driver.getRawButton(1))
+    //   this.hatchDrive.set(-0.5);
+    // else
+    //   this.hatchDrive.set(0);
   }
 
   // this sets the speed of the left-side motors
