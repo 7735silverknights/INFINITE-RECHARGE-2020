@@ -100,6 +100,17 @@ public class Robot extends TimedRobot {
     m_autoSelected = m_chooser.getSelected();
     // m_autoSelected = SmartDashboard.getString("Auto Selector", kDefaultAuto);
     System.out.println("Auto selected: " + m_autoSelected);
+      //Starts right in front of hatch, heads to hatch 
+  //HOW DO WE SWITCH BETWEEN AUTO AND TELEOP
+  @Override
+  public void auto1(){
+    
+  } 
+
+  @Override
+  public void auto2(){
+    double time = Timer.getFPGATimestamp();
+    
   }
 
   /**
@@ -107,18 +118,120 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousPeriodic() {  
-
-      /*
+    double time = Timer.getFPGATimestamp();
     switch (m_autoSelected) {
       case kCustomAuto:
-        // Put custom auto code here
+        /*
+            add customAuto code here
+        */
+        break;
+      case auto1: //STARTING RIGHTMOST, DUMP BALLS INTO HATCH
+        if(time - startTime < 3){ //driving forward
+            this.leftDrive.set(1);  
+            this.rightDrive.set(1);
+        } else if (time-startTime < 9){ //dumping balls
+            this.leftDrive.set(0);
+            this.rig
+            this.intakeDrive.set(-1);
+        } else if (time-startTime < 10.5){ //turning left (to get out of way)
+            this.leftDrive.set(-2);
+            this.rightDrive.set(2);
+        } else if (time - startTime < 15) { //driving away from hatch
+            this.leftDrive.set(1);
+            this.rightDrive.set(1);
+        }
+        break;
+      case auto2:// START MIDDLE, DUMP BALLS INTO HATCH
+        if (time - startTime < 1.5) { //turn right
+            this.leftDrive.set(1);
+            this.rightDrive.set(-1);
+        } else if (time - startTime < 7) { //drive forwards
+            this.leftDrive.set(1);
+            this.rightDrive.set(1);
+        } else if (time - startTime < 8.5) { //turn left
+            this.leftDrive.set(-1);
+            this.rightDrive.set(1);
+        } else if (time - startTime < 10) { //drive forwards
+            this.leftDrive.set(1);
+            this.rightDrive.set(1);
+        } else if (time - startTime < 15) { //dump balls into hatch
+            this.intakeDrive.set(-1);
+        }
+      case auto3: //START LEFTMOST, DUMP BALLS INTO HATCH
+        if (time - startTime < 1.5) {//turn right
+            this.leftDrive.set(1);
+            this.rightDrive.set(-1);
+        } else if (time - startTime < 7) {//drive forwards 
+            this.leftDrive.set(2);
+            this.rightDrive.set(2);
+        } else if (time - startTime < 8.5) { //turn left
+            this.leftDrive.set(-1);
+            this.rightDrive.set(1);
+        } else if (time - startTime < 11) { //drive forwards to hatch
+            this.leftDrive.set(1);
+            this.rightDrive.set(1);
+        } else {//dump balls into hatch
+            this.leftDrive.set(0);
+            this.rightDrive.set(0);
+            this.intakeDrive.set(-1);
+        }
+        break;
+      case auto4: //START MIDDLE, DUMP BALLS TO BACK OF RIGHTMOST SHOOTER ROBOT
+        if (time - startTime < 1) { //drive forwards enough to cross the starting line
+            this.leftDrive.set(1.5);
+            this.rightDrive.set(1.5);
+        } else if (time - startTime < 3) { //drive backwards twice the distance
+            this.leftDrive.set(-1.5);
+            this.rightDrive.set(-1.5);
+        } else if (time - startTime < 5) { //turn right
+            this.leftDrive.set(1);
+            this.rightDrive.set(-1);
+        } else if (time - startTime < 7) { //drive forwards to back of shooter robot
+            this.leftDrive.set(1);
+            this.leftDrive.set(1);
+        } else if (time - startTime < 8.5) { //turn left to face robot
+            this.leftDrive.set(-1);
+            this.rightDrive.set(1);
+        } else if (time - startTime < 9) { //drive forwards enough to close gap
+            this.leftDrive.set(1);
+            this.rightDrive.set(1);
+        } else if (time - startTime < 13) { //dump balls
+            this.leftDrive.set(0);
+            this.rightDrive.set(0);
+            this.intakeDrive.set(-1);
+        } else{ //back up
+            this.leftDrive.set(-1);
+            this.rightDrive.set(-1);
+        }
+        break;
+      case auto5: //START LEFTMOST, DUMP BALLS TO THE BACK OF RIGHTMOST SHOOTER ROBOT 
+        if (time - startTime < 1) { //drive forwards enough to cross the line
+            this.leftDrive.set(1.5);
+            this.rightDrive.set(1.5);
+        } else if (time - startTime < 3) { //drive backwards twice the distance
+            this.leftDrive.set(-1.5);
+            this.rightDrive.set(-1.5);
+        } else if (time - startTime < 4.5) { //turn right
+            this.leftDrive.set(1);
+            this.rightDrive.set(-1);
+        } else if (time - startTime < 10) { //drive forwards to the back of robot
+            this.leftDrive.set(1);
+            this.rightDrive.set(1);
+        } else if (time - startTime < 11.5) { //turn left to face the robot
+            this.leftDrive.set(-1);
+            this.rightDrive.set(1);
+        } else if (time - startTime < 12.5) { //drive forwards enough to close gap
+            this.leftDrive.set(1);
+            this.rightDrive.set(1);
+        } else if (time - startTime < 15) { //dump balls
+            this.intakeDrive.set(-1);
+        }
         break;
       case kDefaultAuto:
       default:
         // Put default auto code here
         break;
     }
-    */
 
       // arcade drive
       // getting the inputs
@@ -183,128 +296,7 @@ public class Robot extends TimedRobot {
       this.liftDrive.set(0);
   }
 
-  //Starts right in front of hatch, heads to hatch 
-  //HOW DO WE SWITCH BETWEEN AUTO AND TELEOP
-  @Override
-  public void auto1(){
-    double time = Timer.getFPGATimestamp();
-    // one rotation is 18.42 inches
-    if(time - startTime < 3){
-      //driving forward
-      this.leftDrive.set(1);  
-      this.rightDrive.set(1);
-    } else if (time-startTime < 9){
-      //dumping balls
-      this.intakeDrive.set(-1);
-    } else if (time-startTime < 10.5){
-      //turning left (to get out of way)
-      this.leftDrive.set(-2);
-      this.rightDrive.set(2);
-    } else if (time - startTime < 15) {
-      //driving away from hatch
-      this.leftDrive.set(1);
-      this.rightDrive.set(1);
-    }
-  } 
 
-  // starts between other teams, heading to hatch
-  @Override
-  public void auto2(){
-    double time = Timer.getFPGATimestamp();
-    if (time - startTime < 1.5) {
-      this.leftDrive.set(1);
-      this.rightDrive.set(-1);
-    } else if (time - startTime < 4) {
-      this.leftDrive.set(1);
-      this.leftDrive.set(1);
-    } else if (time - startTime < 5.5) {
-      this.intakeDrive.set(-1);
-    } else if (time - startTime < 7) {
-      this.leftDrive.set(-1);
-      this.rightDrive.set(1);
-    } else if (time - startTime < ) {
-      this.leftDrive.set(1);
-      this.rightDrive.set(1);
-    }
-  }
-
-  //start at the furthest end, heading to hatch
-  @Override
-  public void auto3(){
-    double time = Timer.getFPGATimestamp();
-    if (time - startTime < 1.5) {
-      this.leftDrive.set(1);
-      this.rightDrive.set(-1);
-    } else if (time - startTime < ) {
-      this.leftDrive.set(2);
-      this.leftDrive.set(2);
-    } else if (time - startTime < ) {
-      this.intakeDrive.set(-1);
-    } else if (time - startTime < 13.5) {
-      this.leftDrive.set(-1);
-      this.rightDrive.set(1);
-    } else if (time - startTime < 15) {
-      this.leftDrive.set(1);
-      this.rightDrive.set(1);
-    }
-  }
-
-  //start at middle, dumping to back of shooting bot at hatch
-  @Override
-  public void auto4(){
-    double time = Timer.getFPGATimestamp();
-    if (time - startTime < 1) {
-      this.leftDrive.set(1.5);
-      this.rightDrive.set(1.5);
-    } else if (time - startTime < 3) {
-      this.leftDrive.set(-1.5);
-      this.rightDrive.set(-1.5);
-    } else if (time - startTime < 5) {
-      this.leftDrive.set(1);
-      this.rightDrive.set(-1);
-    } else if (time - startTime < 7) {
-      this.leftDrive.set(1);
-      this.leftDrive.set(1);
-    } else if (time - startTime < 8.5) { 
-      this.leftDrive.set(-1);
-      this.rightDrive.set(1);
-    } else if (time - startTime < 9) {
-      this.leftDrive.set(1);
-      this.rightDrive.set(1);
-    } else if (time - startTime < 13) {
-      this.intakeDrive.set(-1);
-    } else{
-      this.leftDrive.set(-1);
-      this.rightDrive.set(-1);
-    }
-  }
-
-  //starting furthermost from hatch, heading to back of shooter bot across from hatch
-  @Override
-  public void auto5(){
-    double time = Timer.getFPGATimestamp();
-    if (time - startTime < 1) {
-      this.leftDrive.set(1.5);
-      this.rightDrive.set(1.5);
-    } else if (time - startTime < 3) {
-      this.leftDrive.set(-1.5);
-      this.rightDrive.set(-1.5);
-    } else if (time - startTime < 4.5) {
-      this.leftDrive.set(1);
-      this.rightDrive.set(-1);
-    } else if (time - startTime < 10) {
-      this.leftDrive.set(1);
-      this.rightDrive.set(1);
-    } else if (time - startTime < 11.5) {
-      this.leftDrive.set(-1);
-      this.rightDrive.set(1);
-    } else if (time - startTime < 12.5) {
-      this.leftDrive.set(1);
-      this.rightDrive.set(1);
-    } else if (time - startTime < 15) {
-      this.intakeDrive.set(-1);
-    }
-  }
 
   //starting 
 
