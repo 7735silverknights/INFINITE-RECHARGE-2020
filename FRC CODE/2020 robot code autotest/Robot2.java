@@ -138,32 +138,6 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousPeriodic() {  
-    double time = 
-    
-
-
-    switch (m_autoSelected) {
-      case kCustomAuto:
-        /*
-            add customAuto code here
-        */
-        break;
-      case auto1: 
-        
-        break;
-      case auto2:
-        
-        break;
-      case auto4: 
-        
-        break;
-      case auto5: 
-        break;
-      case kDefaultAuto:
-      default:
-        // Put default auto code here
-        break;
-    }
 
       // arcade drive
       // getting the inputs
@@ -333,108 +307,121 @@ public class Robot extends TimedRobot {
     double time = Timer.getFPGATimestamp();
     //STARTING RIGHTMOST, DUMP BALLS INTO HATCH
     if (switch1.get()) {
-      if(time - startTime < 1){ //driving forward
-        this.leftDrive.set(-1);  
-        this.rightDrive.set(-1);
-      } else if (time-startTime < 9){ //dumping balls
+      if (time - startTime < 1) { //drive backwards to cross line
+        this.leftDrive.set(-0.3);
+        this.rightDrive.set(-0.3);
+      } else if(time - startTime < 5) { //driving forward to hatch
+        this.leftDrive.set(0.3);  
+        this.rightDrive.set(0.3);
+      } else if (time - startTime < 10) { //dumping balls
         this.leftDrive.set(0);
-        this.intakeDrive.set(-1);
-      } else if (time-startTime < 10.5){ //turning left (to get out of way)
-        this.leftDrive.set(0.17);
-        this.rightDrive.set(-0.17);
-      } else if (time - startTime < 15) { //driving away from hatch
-        this.leftDrive.set(1);
-        this.rightDrive.set(1);
-      }
+        this.rightDrive.set(0);
+        this.intakeDrive.set(-0.5);
+      } else if (time - startTime < 11) { //turning left (to get out of way)
+        this.leftDrive.set(-0.17);
+        this.rightDrive.set(0.17);
+      } else if (time - startTime < 14) { //driving away from hatch
+        this.leftDrive.set(0.3);
+        this.rightDrive.set(0.3);
+      } 
     // START MIDDLE, DUMP BALLS INTO HATCH
     } else if (switch2.get()) {
-      if (time - startTime < 1.5) { //turn right
-        this.leftDrive.set(1);
-        this.rightDrive.set(-1);
+      if (time - startTime < 1) { //drive backwards to cross the
+        this.leftDrive.set(-0.3);
+        this.rightDrive.set(-0.3);
+      } else if (time - startTime < 2) { //drive forwards to return to stating position
+        this.leftDrive.set(0.3);
+        this.rightDrive.set(0.3);
+      } else if (time - startTime < 3) { //turn right
+        this.leftDrive.set(0.17);
+        this.rightDrive.set(-0.17);
       } else if (time - startTime < 7) { //drive forwards
-        this.leftDrive.set(1);
-        this.rightDrive.set(1);
-      } else if (time - startTime < 8.5) { //turn left
-        this.leftDrive.set(-1);
-        this.rightDrive.set(1);
+        this.leftDrive.set(0.3);
+        this.rightDrive.set(0.3);
+      } else if (time - startTime < 8) { //turn left
+        this.leftDrive.set(-0.17);
+        this.rightDrive.set(0.17);
       } else if (time - startTime < 10) { //drive forwards
-        this.leftDrive.set(1);
-        this.rightDrive.set(1);
+        this.leftDrive.set(0.3);
+        this.rightDrive.set(0.3);
       } else { //dump balls into hatch
-        this.intakeDrive.set(-1);
+        this.leftDrive.set(0);
+        this.rightDrive.set(0);
+        this.intakeDrive.set(-0.5);
       }
     //START LEFTMOST, DUMP BALLS INTO HATCH
     } else if (switch3.get()) {
-      if (time - startTime < 1.5) {//turn right
-        this.leftDrive.set(1);
-        this.rightDrive.set(-1);
+      if (time - startTime < 1) { //drive backwards to cross the line
+        this.leftDrive.set(0.3);
+        this.rightDrive.set(0.3);
+      } else if (time - startTime < 2) {//turn right
+        this.leftDrive.set(0.17);
+        this.rightDrive.set(-0.17);
       } else if (time - startTime < 7) {//drive forwards 
-        this.leftDrive.set(2);
-        this.rightDrive.set(2);
+        this.leftDrive.set(0.3);
+        this.rightDrive.set(0.3);
       } else if (time - startTime < 8.5) { //turn left
-        this.leftDrive.set(-1);
-        this.rightDrive.set(1);
+        this.leftDrive.set(-0.17);
+        this.rightDrive.set(0.17);
       } else if (time - startTime < 11) { //drive forwards to hatch
-        this.leftDrive.set(1);
-        this.rightDrive.set(1);
+        this.leftDrive.set(0.3);
+        this.rightDrive.set(0.3);
       } else {//dump balls into hatch
         this.leftDrive.set(0);
         this.rightDrive.set(0);
-        this.intakeDrive.set(-1);
+        this.intakeDrive.set(-0.5);
       }
     //START MIDDLE, DUMP BALLS TO BACK OF RIGHTMOST SHOOTER ROBOT
     } else if (switch4.get()) {
-      if (time - startTime < 1) { //drive forwards enough to cross the starting line
-        this.leftDrive.set(0.3);
-        this.rightDrive.set(1.5);
-      } else if (time - startTime < 3) { //drive backwards twice the distance
-        this.leftDrive.set(-1.5);
-        this.rightDrive.set(-1.5);
+      if (time - startTime < 1) { //drive backwards enough to cross the starting line
+        this.leftDrive.set(-0.3);
+        this.rightDrive.set(-0.3);
       } else if (time - startTime < 5) { //turn right
-        this.leftDrive.set(1);
-        this.rightDrive.set(-1);
-      } else if (time - startTime < 7) { //drive forwards to back of shooter robot
-        this.leftDrive.set(1);
-        this.leftDrive.set(1);
-      } else if (time - startTime < 8.5) { //turn left to face robot
-        this.leftDrive.set(-1);
-        this.rightDrive.set(1);
-      } else if (time - startTime < 9) { //drive forwards enough to close gap
-        this.leftDrive.set(1);
-        this.rightDrive.set(1);
+        this.leftDrive.set(0.17);
+        this.rightDrive.set(-0.17);
+      } else if (time - startTime < 8) { //drive forwards to back of shooter robot
+        this.leftDrive.set(0.3);
+        this.leftDrive.set(0.3);
+      } else if (time - startTime < 9) { //turn left to face robot
+        this.leftDrive.set(-0.17);
+        this.rightDrive.set(0.17);
+      } else if (time - startTime < 9.3) { //drive forwards enough to close gap
+        this.leftDrive.set(0.3);
+        this.rightDrive.set(0.3);
       } else if (time - startTime < 13) { //dump balls
         this.leftDrive.set(0);
         this.rightDrive.set(0);
-        this.intakeDrive.set(-1);
+        this.intakeDrive.set(-0.5);
       } else{ //back up
-        this.leftDrive.set(-1);
-        this.rightDrive.set(-1);
+        this.leftDrive.set(-0.3);
+        this.rightDrive.set(-0.3);
       }
     //START LEFTMOST, DUMP BALLS TO THE BACK OF RIGHTMOST SHOOTER ROBOT 
     } else if (switch5.get()) {
-      if (time - startTime < 1) { //drive forwards enough to cross the line
-        this.leftDrive.set(1.5);
-        this.rightDrive.set(1.5);
-      } else if (time - startTime < 3) { //drive backwards twice the distance
-        this.leftDrive.set(-1.5);
-        this.rightDrive.set(-1.5);
-      } else if (time - startTime < 4.5) { //turn right
-        this.leftDrive.set(1);
-        this.rightDrive.set(-1);
-      } else if (time - startTime < 10) { //drive forwards to the back of robot
-        this.leftDrive.set(1);
-        this.rightDrive.set(1);
+      if (time - startTime < 1) { //drive backwards enough to cross the line
+        this.leftDrive.set(-0.3);
+        this.rightDrive.set(-0.3);
+      } else if (time - startTime < 2) { //turn right
+        this.leftDrive.set(0.17);
+        this.rightDrive.set(-0.17);
+      } else if (time - startTime < 19) { //drive forwards to the back of robot
+        this.leftDrive.set(0.3);
+        this.rightDrive.set(0.3);
       } else if (time - startTime < 11.5) { //turn left to face the robot
-        this.leftDrive.set(-1);
-        this.rightDrive.set(1);
-      } else if (time - startTime < 12.5) { //drive forwards enough to close gap
-        this.leftDrive.set(1);
-        this.rightDrive.set(1);
+        this.leftDrive.set(-0.17);
+        this.rightDrive.set(0.17);
+      } else if (time - startTime < 11.75) { //drive forwards enough to close gap
+        this.leftDrive.set(0.3);
+        this.rightDrive.set(0.3);
       } else if (time - startTime < 15) { //dump balls
-        this.intakeDrive.set(-1);
+        this.intakeDrive.set(-0.5);
       }
+    //JUST DRIVE BACKWARDS TO CROSS THE LINE
     } else if (switch6.get()) {
-
+      if (time - startTime < 2) { //drive backwards
+        this.leftDrive.set(-0.3);
+        this.rightDrive.set(-0.3);
+      }
     } else if (switch7.get()) {
 
     } else if (switch8.get()) {
